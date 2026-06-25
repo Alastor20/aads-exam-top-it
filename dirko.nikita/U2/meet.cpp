@@ -1,0 +1,63 @@
+#include "meet.hpp"
+#include <fstream>
+#include <istream>
+#include <ostream>
+#include <stdexcept>
+#include <string>
+
+void dirko::readMeets(std::istream &input, Vector< Meet > &meets)
+{
+  std::string line;
+
+  while (std::getline(input, line)) {
+    if (line.empty()) {
+      continue;
+    }
+
+    size_t pos = 0;
+    size_t first = 0;
+    size_t second = 0;
+    size_t duration = 0;
+
+    try {
+      first = std::stoul(line, &pos);
+    } catch (...) {
+      throw std::runtime_error("Invalid meet data");
+    }
+
+    while (pos < line.size() && (line[pos] == ' ' || line[pos] == '\t')) {
+      ++pos;
+    }
+
+    if (pos == line.size()) {
+      throw std::runtime_error("Invalid meet data");
+    }
+
+    try {
+      second = std::stoul(line.substr(pos), &pos);
+    } catch (...) {
+      throw std::runtime_error("Invalid meet data");
+    }
+
+    while (pos < line.size() && (line[pos] == ' ' || line[pos] == '\t')) {
+      ++pos;
+    }
+
+    if (pos == line.size()) {
+      throw std::runtime_error("Invalid meet data");
+    }
+
+    try {
+      duration = std::stoul(line.substr(pos), &pos);
+    } catch (...) {
+      throw std::runtime_error("Invalid meet data");
+    }
+
+    Meet meet;
+    meet.first = first;
+    meet.second = second;
+    meet.duration = duration;
+
+    add(meets, meet);
+  }
+}
