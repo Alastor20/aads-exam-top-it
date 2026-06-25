@@ -283,3 +283,82 @@ void dirko::cmdMeets(std::istream &input, std::ostream &output, Vector< Person >
 
   clear(result);
 }
+
+void dirko::cmdCommons(std::istream &input, std::ostream &output, Vector< Person > &, Vector< Meet > &meets)
+{
+  size_t id1 = 0;
+  size_t id2 = 0;
+
+  input >> id1 >> id2;
+
+  if (!input) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  Vector< size_t > contacts1;
+  Vector< size_t > contacts2;
+  Vector< size_t > result;
+
+  init(contacts1);
+  init(contacts2);
+  init(result);
+
+  for (size_t i = 0; i < meets.size; ++i) {
+    if (meets.data[i].first == id1) {
+      add(contacts1, meets.data[i].second);
+    } else if (meets.data[i].second == id1) {
+      add(contacts1, meets.data[i].first);
+    }
+
+    if (meets.data[i].first == id2) {
+      add(contacts2, meets.data[i].second);
+    } else if (meets.data[i].second == id2) {
+      add(contacts2, meets.data[i].first);
+    }
+  }
+
+  for (size_t i = 0; i < contacts1.size; ++i) {
+    bool found = false;
+
+    for (size_t j = 0; j < contacts2.size; ++j) {
+      if (contacts1.data[i] == contacts2.data[j]) {
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
+      bool duplicate = false;
+
+      for (size_t j = 0; j < result.size; ++j) {
+        if (result.data[j] == contacts1.data[i]) {
+          duplicate = true;
+          break;
+        }
+      }
+
+      if (!duplicate) {
+        add(result, contacts1.data[i]);
+      }
+    }
+  }
+
+  for (size_t i = 0; i < result.size; ++i) {
+    for (size_t j = i + 1; j < result.size; ++j) {
+      if (result.data[j] < result.data[i]) {
+        size_t temp = result.data[i];
+        result.data[i] = result.data[j];
+        result.data[j] = temp;
+      }
+    }
+  }
+
+  for (size_t i = 0; i < result.size; ++i) {
+    output << result.data[i] << '\n';
+  }
+
+  clear(contacts1);
+  clear(contacts2);
+  clear(result);
+}
