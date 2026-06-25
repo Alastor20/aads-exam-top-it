@@ -5,6 +5,37 @@
 #include <stdexcept>
 #include <string>
 
+namespace
+{
+  struct MeetKey
+  {
+    size_t id;
+    size_t duration;
+  };
+
+  bool isLess(const MeetKey &a, const MeetKey &b)
+  {
+    if (a.id != b.id) {
+      return a.id < b.id;
+    }
+
+    return a.duration < b.duration;
+  }
+
+  void sortMeets(dirko::Vector< MeetKey > &meets)
+  {
+    for (size_t i = 0; i < meets.size; ++i) {
+      for (size_t j = i + 1; j < meets.size; ++j) {
+        if (isLess(meets.data[j], meets.data[i])) {
+          MeetKey temp = meets.data[i];
+          meets.data[i] = meets.data[j];
+          meets.data[j] = temp;
+        }
+      }
+    }
+  }
+}
+
 void dirko::readMeets(std::istream &input, Vector< Meet > &meets)
 {
   std::string line;
