@@ -1,6 +1,6 @@
 #ifndef MEET_HPP
 #define MEET_HPP
-#include "../common/person.cpp"
+#include "../common/person.hpp"
 #include "../common/vector.hpp"
 #include <cstddef>
 
