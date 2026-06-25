@@ -222,3 +222,28 @@ void dirko::cmdRedesc(std::istream &input, std::ostream &output, Vector< Person 
 
   person->info = description;
 }
+
+void dirko::cmdDesc(std::istream &input, std::ostream &output, Vector< Person > &persons, Vector< Meet > &)
+{
+  size_t id = 0;
+
+  input >> id;
+
+  if (!input) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  const Person *person = findPersonById(persons, id);
+
+  if (person == nullptr) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  if (person->info.empty()) {
+    output << "<ANON>\n";
+  } else {
+    output << person->info << '\n';
+  }
+}
