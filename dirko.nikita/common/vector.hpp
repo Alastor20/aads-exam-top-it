@@ -11,6 +11,13 @@ namespace dirko
     size_t cap;
   };
   template< class T >
+  void init(Vector< T > &vec)
+  {
+    vec.data = nullptr;
+    vec.size = 0;
+    vec.cap = 0;
+  }
+  template< class T >
   void reserve(Vector< T > &vec, size_t newCap)
   {
     if (vec.cap >= newCap) {
