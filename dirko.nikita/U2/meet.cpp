@@ -438,3 +438,35 @@ void dirko::cmdGreater(std::istream &input, std::ostream &output, Vector< Person
 
   clear(result);
 }
+
+void dirko::cmdOutPersons(std::istream &input, std::ostream &output, Vector< Person > &persons, Vector< Meet > &)
+{
+  std::string filename;
+
+  input >> filename;
+
+  if (!input) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  std::ofstream outputFile(filename);
+
+  if (!outputFile.is_open()) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  Vector< Person > withDescription;
+  init(withDescription);
+
+  for (size_t i = 0; i < persons.size; ++i) {
+    if (!persons.data[i].info.empty()) {
+      add(withDescription, persons.data[i]);
+    }
+  }
+
+  dirko::output(outputFile, withDescription);
+
+  clear(withDescription);
+}
