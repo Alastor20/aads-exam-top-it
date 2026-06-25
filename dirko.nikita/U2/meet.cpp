@@ -362,3 +362,79 @@ void dirko::cmdCommons(std::istream &input, std::ostream &output, Vector< Person
   clear(contacts2);
   clear(result);
 }
+
+void dirko::cmdLess(std::istream &input, std::ostream &output, Vector< Person > &, Vector< Meet > &meets)
+{
+  size_t time = 0;
+  size_t id = 0;
+
+  input >> time >> id;
+
+  if (!input) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  Vector< MeetKey > result;
+  init(result);
+
+  for (size_t i = 0; i < meets.size; ++i) {
+    if (meets.data[i].first == id && meets.data[i].duration < time) {
+      MeetKey key;
+      key.id = meets.data[i].second;
+      key.duration = meets.data[i].duration;
+      add(result, key);
+    } else if (meets.data[i].second == id && meets.data[i].duration < time) {
+      MeetKey key;
+      key.id = meets.data[i].first;
+      key.duration = meets.data[i].duration;
+      add(result, key);
+    }
+  }
+
+  sortMeets(result);
+
+  for (size_t i = 0; i < result.size; ++i) {
+    output << result.data[i].id << ' ' << result.data[i].duration << '\n';
+  }
+
+  clear(result);
+}
+
+void dirko::cmdGreater(std::istream &input, std::ostream &output, Vector< Person > &, Vector< Meet > &meets)
+{
+  size_t time = 0;
+  size_t id = 0;
+
+  input >> time >> id;
+
+  if (!input) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  Vector< MeetKey > result;
+  init(result);
+
+  for (size_t i = 0; i < meets.size; ++i) {
+    if (meets.data[i].first == id && meets.data[i].duration > time) {
+      MeetKey key;
+      key.id = meets.data[i].second;
+      key.duration = meets.data[i].duration;
+      add(result, key);
+    } else if (meets.data[i].second == id && meets.data[i].duration > time) {
+      MeetKey key;
+      key.id = meets.data[i].first;
+      key.duration = meets.data[i].duration;
+      add(result, key);
+    }
+  }
+
+  sortMeets(result);
+
+  for (size_t i = 0; i < result.size; ++i) {
+    output << result.data[i].id << ' ' << result.data[i].duration << '\n';
+  }
+
+  clear(result);
+}
