@@ -2,34 +2,57 @@
 #include "vector.hpp"
 #include <cstddef>
 #include <iostream>
-#include <limits>
 #include <string>
 
+namespace
+{
+  bool containsPerson(const dirko::Vector< dirko::Person > &persons, size_t id)
+  {
+    for (size_t i = 0; i < persons.size; ++i) {
+      if (persons.data[i].id == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
 std::istream &dirko::input(std::istream &in, Vector< Person > &persons, size_t &ignored)
 {
 
-  size_t id = 0;
-  while (in >> id) {
-    if (!in) {
-      in.clear();
-      in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+  ignored = 0;
+
+  std::string line;
+
+  while (std::getline(in, line)) {
+    if (line.empty()) {
+      continue;
+    }
+
+    size_t pos = 0;
+    size_t id = 0;
+
+    try {
+      id = std::stoul(line, &pos);
+    } catch (...) {
       ++ignored;
+      continue;
     }
-    for (size_t i = 0; i < persons.size; ++i) {
-      if (persons.data[i].id == id) {
-        in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-        ++ignored;
-        continue;
-      }
+
+    while (pos < line.size() && (line[pos] == ' ' || line[pos] == '\t')) {
+      ++pos;
     }
-    std::string info;
-    in >> std::ws;
-    std::getline(in, info);
-    if (info.empty()) {
+
+    if (pos == line.size()) {
       ++ignored;
-    } else {
-      add(persons, {id, info});
+      continue;
     }
+
+    if (containsPerson(persons, id)) {
+      ++ignored;
+      continue;
+    }
+
+    add(persons, {id, line.substr(pos)});
   }
   return in;
 }
@@ -37,6 +60,9 @@ std::ostream &dirko::output(std::ostream &out, Vector< Person > &persons)
 {
   for (size_t i = 0; i < persons.size; ++i) {
     out << persons.data[i].id << ' ' << persons.data[i].info << '\n';
+  }
+  if (persons.size == 0) {
+    out << '\n';
   }
   return out;
 }
