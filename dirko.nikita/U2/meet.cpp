@@ -61,3 +61,17 @@ void dirko::readMeets(std::istream &input, Vector< Meet > &meets)
     add(meets, meet);
   }
 }
+void dirko::removeSelfMeets(Vector< Meet > &meets)
+{
+  Vector< Meet > filtered;
+  init(filtered);
+
+  for (size_t i = 0; i < meets.size; ++i) {
+    if (meets.data[i].first != meets.data[i].second) {
+      add(filtered, meets.data[i]);
+    }
+  }
+
+  clear(meets);
+  meets = filtered;
+}
