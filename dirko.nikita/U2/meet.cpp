@@ -247,3 +247,39 @@ void dirko::cmdDesc(std::istream &input, std::ostream &output, Vector< Person > 
     output << person->info << '\n';
   }
 }
+void dirko::cmdMeets(std::istream &input, std::ostream &output, Vector< Person > &, Vector< Meet > &meets)
+{
+  size_t id = 0;
+
+  input >> id;
+
+  if (!input) {
+    output << "<INVALID COMMAND>\n";
+    return;
+  }
+
+  Vector< MeetKey > result;
+  init(result);
+
+  for (size_t i = 0; i < meets.size; ++i) {
+    if (meets.data[i].first == id) {
+      MeetKey key;
+      key.id = meets.data[i].second;
+      key.duration = meets.data[i].duration;
+      add(result, key);
+    } else if (meets.data[i].second == id) {
+      MeetKey key;
+      key.id = meets.data[i].first;
+      key.duration = meets.data[i].duration;
+      add(result, key);
+    }
+  }
+
+  sortMeets(result);
+
+  for (size_t i = 0; i < result.size; ++i) {
+    output << result.data[i].id << ' ' << result.data[i].duration << '\n';
+  }
+
+  clear(result);
+}
