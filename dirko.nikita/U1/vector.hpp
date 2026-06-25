@@ -40,11 +40,6 @@ namespace dirko
     ++vec.size;
   }
   template< class T >
-  void pop(Vector< T > &vec)
-  {
-    --vec.size;
-  }
-  template< class T >
   void clear(Vector< T > &vec)
   {
     delete[] vec.data;

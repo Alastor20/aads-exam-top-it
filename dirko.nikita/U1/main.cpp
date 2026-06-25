@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -37,20 +38,25 @@ int main(int argc, char *argv[])
     }
   }
   dirko::Vector< dirko::Person > persons;
+  size_t ignored = 0;
   if (inSet) {
     std::ifstream fin(inFilename);
     if (!fin.is_open()) {
       return 2;
     }
-    dirko::input(fin, persons);
+    dirko::input(fin, persons, ignored);
   } else {
-    dirko::input(std::cin, persons);
+    dirko::input(std::cin, persons, ignored);
   }
 
+  std::cerr << persons.size << ' ' << ignored << '\n';
   if (outSet) {
     std::ofstream fout(outFilename);
     if (!fout.is_open()) {
       return 2;
     }
+    dirko::output(fout, persons);
+  } else {
+    dirko::output(std::cout, persons);
   }
 }

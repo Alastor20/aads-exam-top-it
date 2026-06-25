@@ -11,7 +11,8 @@ namespace dirko
     size_t id;
     std::string info;
   };
-  std::istream &input(std::istream &in, Vector< Person > &persons);
+  std::istream &input(std::istream &in, Vector< Person > &persons, size_t &ignored);
+  std::ostream &output(std::ostream &out, Vector< Person > &persons);
 }
 
 #endif
