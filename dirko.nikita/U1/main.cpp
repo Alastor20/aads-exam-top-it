@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "person.hpp"
-#include "vector.hpp"
+#include <person.hpp>
+#include <vector.hpp>
 
 int main(int argc, char *argv[])
 {
